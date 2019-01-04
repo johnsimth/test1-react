@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import ApolloClient from "apollo-boost";
 import { ApolloProvider } from "react-apollo";
-import GetTodos from "../components/getTodo";
+import GetTodos from "./getTodo";
 
 export var client;
 
-class Dashboard extends Component {
+class Home extends Component {
   constructor(props) {
     super(props);
     const ACCESS_TOKEN = localStorage.getItem("access_token");
@@ -17,17 +17,22 @@ class Dashboard extends Component {
     });
   }
 
+  login() {
+    this.props.auth.login();
+  }
+
   render() {
+    const { isAuthenticated } = this.props.auth;
     return (
-      <div>
-        {
+      <div className="container">
+        {isAuthenticated() && (
           <ApolloProvider client={client}>
             <GetTodos />
           </ApolloProvider>
-        }
+        )}
       </div>
     );
   }
 }
 
-export default Dashboard;
+export default Home;
